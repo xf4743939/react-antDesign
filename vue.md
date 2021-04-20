@@ -7,3 +7,5 @@
  5.初始化 data、props、computed、watcher
  ### $mount方法 
  >> 首先缓存了原型上的$mount方法,再重新定义该方法;如果options 没有render方法 则会把el或者template字符串转换成 render 方法 **Vue 的组件的渲染最终都需要 render 方法(调用compileToFunctions)** 调用 mountComponent中_render方法生成虚拟Node,再实例化一个渲染Watcher,在它的回调函数中会调用 updateComponent 方法,vm._update 更新Dom. _render最终是通过执行 createElement 方法并返回的是 vnode
+### update
+Vue 的 _update 是实例的一个私有方法，它被调用的时机有 2 个，一个是首次渲染，一个是数据更新的时候(最重要是调取__patch__方法) patch 两个入参 一个dom 操作的方法，一个是钩子函数的实现;回到 patch 方法本身，它接收 4个参数，oldVnode 表示旧的 VNode 节点，它也可以不存在或者是一个 DOM 对象；vnode 表示执行 _render 后返回的 VNode 的节点；hydrating 表示是否是服务端渲染；removeOnly 是给 transition-group 用的
