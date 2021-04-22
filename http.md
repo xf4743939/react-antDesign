@@ -17,8 +17,9 @@ http+实践（第二章看完）
 5. Content-Type:'application/json'
 6. Cookie
 7. Host:gz.meituan.com(域名)
-8. Referer:'https://gz.meituan.com/'
-9. User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
+8. Origin:https://gz.meituan.com
+9. Referer:https://gz.meituan.com/
+10. User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
 ### Response Header 部分
 1. Access-Control-Allow-Credentials: true
 2. Access-Control-Allow-Origin: http://gz.meituan.com
