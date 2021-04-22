@@ -2,6 +2,32 @@
 
 http+实践（第二章看完）
 
+## http请求头返回头
+### General部分
+1.Request URL:https://www.baidu.com
+2.Request Methon: GET | POST |PUT | DELETE
+3.Status Code:200 ok
+4.Remote Address:170.30.68.94:8080
+5.Referer Policy:strict-origin-when-cross-origin(不发送query 和路径等)
+### Request Header 部分
+1. Accept
+2. Accept-Language:ZH-CN;zh;q=0.9
+3. Cache-Control:no-chache | max-age | no-store
+4. Connection:keep-alive
+5. Content-Type:'application/json'
+6. Cookie
+7. Host:gz.meituan.com(域名)
+8. Referer:'https://gz.meituan.com/'
+9. User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
+### Response Header 部分
+1. Access-Control-Allow-Credentials: true
+2. Access-Control-Allow-Origin: http://gz.meituan.com
+3. Connection: keep-alive
+4. Content-Length: 2
+5. Content-Type: application/json; charset=utf-8
+6. Date: Thu, 22 Apr 2021 01:51:32 GMT
+7. Server: openresty
+
 ## 示例
 
 - 输入 URL 打开网页
