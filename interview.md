@@ -8,4 +8,6 @@
  ### MVP
  ## 前端跨域解决方案
  1. JSONP实现跨域请求原理就是动态创建script,然后利用script的scr不受同源策略约束来跨域获取数据。jsonp 只要由回调函数和数据两部分组成。回调的函数名字一般在请求中指定。而数据就是传入回调函数中的json 数据.
- 2. cors 跨域：原理在服务端设置响应头header  的 Access-control-Allow-origin 字段,这样浏览器检测到header中的Access-Control-Allow-Origin,这样就可以跨域. 设置了cors之后network 会出现两次请求问题，第一次options 请求预检,分别为简单请求和非简单请求两种. HTTP 头来告诉浏览器让运行在一个origin(domin) 上web应用被准许访问来自不同源服务器上的指定资源.
+ 2. cors 跨域：原理在服务端设置响应头header  的 Access-control-Allow-origin 字段,这样浏览器检测到header中的Access-Control-Allow-Origin,这样就可以跨域. 设置了cors之后network 会出现两次请求问题，第一次OPTIONS方法 请求预检,分别为简单请求和非简单请求两种. HTTP 头来告诉浏览器让运行在一个origin(domin) 上web应用被准许访问来自不同源服务器上的指定资源.
+ 3. postMessage 实现跨域 window.open 或iframe.contentWindow 引用调用
+ 4. socket.io 实现跨域
