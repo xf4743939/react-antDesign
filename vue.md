@@ -14,17 +14,12 @@
 
 Vue 的 \_update 是实例的一个私有方法，它被调用的时机有 2 个，一个是首次渲染，一个是数据更新的时候(最重要是调取**patch**方法) patch 两个入参 一个 dom 操作的方法，一个是钩子函数的实现;回到 patch 方法本身，它接收 4 个参数，oldVnode 表示旧的 VNode 节点，它也可以不存在或者是一个 DOM 对象；vnode 表示执行 \_render 后返回的 VNode 的节点；hydrating 表示是否是服务端渲染；removeOnly 是给 transition-group 用的
 
-## vue 面试知识点
+## computed 和 watch 区别
 
-v-html 引入文本但是会造成 xss 攻击风险
+- computed
 
-- v-for 和 v-if 建议不在一块用
-  v-for 计算优先级高于 v-if (循环后要判断是否显示)造成多次判断浪费性能
-- vue 中 event 对象 是原生对象 MouseEvent;事件被挂载在当前元素
-- v-model 语法糖
+1. 支持缓存,只有依赖数据改变，才会重新进行计算; 2. 不支持异步,当 computed 内有异步操作是无效,无法监听到数据变化.3.计算属性是基于它们的响应式依赖进行缓存的
 
-### 生命周期
+- watch
 
-- 挂载阶段
-- 更新阶段
-- 销毁阶段
+1. 不支持缓存,数据变，直接会触发相应操作; 2. watch 支持异步;3.immediate：组件加载立即触发回调函数执行，4. deep: 深度监听，为了发现对象内部值的变化，复杂类型的数据时使用
