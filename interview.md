@@ -23,6 +23,28 @@
  DPR(devicePixelRation)设备像素比,他是默认缩放100%情况下,设备像素和css像素比值： window.devicePixelRatio=物理像素 /CSS像素
  1. border:0.5px solid #e5e5e5;
    优点:简单,没有副作用; 缺点：支持ios8+,不支持安卓
+ 2. 使用伪类元素
+ ```css
+ .setOnePx{
+  position: relative;
+  &::after{
+    position: absolute;
+    content: '';
+    background-color: #e5e5e5;
+    display: block;
+    width: 100%;
+    height: 1px; /*no*/
+    transform: scale(1, 0.5);
+    top: 0;
+    left: 0;
+  }
+}
+
+作者：注销用户
+链接：https://juejin.cn/post/6844903877947424782
+来源：掘金
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+ ```
 ## 手写深拷贝
 ```js
  funciton deepClone(target){
