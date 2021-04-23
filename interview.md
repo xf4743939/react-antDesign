@@ -46,11 +46,11 @@ mdn 把new的内部操作分为4步
 3. 执行构造函数中代码为新对象添加属性
 4. 如果函数没有返回对象,则返回this
 ```js
- function new(){
-    var obj = new Object();
-   var con = [].shift.call(arguments)
-    obj._proto_ = con.prototype;
-    var ret = con.apply(obj,arguments)
-    return ret instanceof Object ? ret : obj
- }
+function myNew() {
+  var obj = new Object();
+  var Con = [].shift.call(arguments)
+  obj.__proto__ = Con.prototype;
+  var ret = Con.apply(obj, arguments);
+  return ret instanceof Object ? ret : obj;
+}
 ```
