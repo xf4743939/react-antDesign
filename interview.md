@@ -18,3 +18,23 @@
 6. window.name+iframe 实现跨域 （name 在不同页面甚至不同域名下）加载后依旧存在,并且支持非常长2MB
 7. location.hash+iframe 跨域
 8. document.domain + iframe该方式只能用于二级域名相同的情况下，比如 a.test.com 和 b.test.com 适用于该方式
+## 移动端1px解决方案
+ - 产生原因
+ DPR(devicePixelRation)设备像素比,他是默认缩放100%情况下,设备像素和css像素比值： window.devicePixelRatio=物理像素 /CSS像素
+ 1. border:0.5px solid #e5e5e5;
+   优点:简单,没有副作用; 缺点：支持ios8+,不支持安卓
+## 手写深拷贝
+```js
+ funciton deepClone(target){
+   if(target === null) return;
+   if(typeof target !== 'object') return target
+   if(target instanceof Function) retutn new Function(target);
+   if(target instanceof Date) retutn new Date(target)
+   if(target instanceof RegExp) retutn  new RegExp(target)
+   const result = new target.constructor;
+   for(let i in target){
+     result[i]=deepClone(target[i])
+   } 
+   return result
+ }
+```
