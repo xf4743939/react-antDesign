@@ -13,7 +13,9 @@ button 点击事件触发:view->Controller 获取用户信息事件的触发：c
 ### MVP
 
 ## 前端跨域解决方案
-
+造成跨域的两种策略:
+- DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。
+- XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求
 1.  JSONP 实现跨域请求原理就是动态创建 script,然后利用 script 的 scr 不受同源策略约束来跨域获取数据。jsonp 只要由回调函数和数据两部分组成。回调的函数名字一般在请求中指定。而数据就是传入回调函数中的 json 数据.
 2.  cors 跨域：原理在服务端设置响应头 header 的 Access-control-Allow-origin 字段,这样浏览器检测到 header 中的 Access-Control-Allow-Origin,这样就可以跨域. 设置了 cors 之后 network 会出现两次请求问题，第一次 OPTIONS 方法 请求预检,分别为简单请求和非简单请求两种. HTTP 头来告诉浏览器让运行在一个 origin(domin) 上 web 应用被准许访问来自不同源服务器上的指定资源.
 3.  postMessage 实现跨域 window.open 或 iframe.contentWindow 引用调用
