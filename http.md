@@ -213,9 +213,18 @@ WebSocket 的其他特点：
 需要配置网络服务器返回 csp 的 http 头部
 default-src 限制全局 可以防止 xss 攻击,但是不能限制表单提交别的域名并跳转
 
-- form-action:用来限制表单域名的跳转范围
+- form-action:用来限制表单域名提交到源
 - img-src
 - script-src
+- style-scr
+- media-src
+- frame-src
+- font-src
 - Content-Security-Policy:default-scr 'self'
   所有内容均来自站点的同一个源(不包括其子域名);不同域名下的内容加载不进来
 - report-url
+- 指令的值
+  1. * 允许任何内容
+  2. none 不需要任何内容
+  3.  self 允许同源内容
+  4.  data 	允许data:协议（如base64编码的图片） 
