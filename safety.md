@@ -81,6 +81,8 @@ Set-Cookie: sessionId=e8bb43229de9; Domain=foo.example.com
 ```
 
 ## 提高资源的安全性-SRI(Subresource Integrity) 与 CSP
+1. 首先需要服务器开启内容安全策略即:Content-Security-Policy: require-sri-for script;
+2. 加入integrity 值
 
 ```js
 <script
