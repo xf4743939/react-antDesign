@@ -89,7 +89,8 @@ Set-Cookie: sessionId=e8bb43229de9; Domain=foo.example.com
   integrity="sha256-WcONURDxHuPpCyTfyxv6ULC5IQS8W/TvkOfiluU2Y1w= sha512-XZBIDDYvednMCvIE+VxLhoh3GZ550KQEUuUG8EA/HNUKVOa9sl2YpyeIGVmi6NVu2VAAT+bReuzUszzugYNxKQ=="
   crossorigin="anonymous"
 ></script>;
-crossorigin: "" | anonymous | (use - credentials);
+crossorigin: "" | anonymous | (use-credentials) 请求头都会带上Origin 属性
+// 使用use-credentials,这个就同时会在跨域请求中带上 cookie 和其他的一些认证信息. 需要服务端response Header 返回：Access-Control-Allow-Credentials
 ```
 
 - SRI
@@ -98,3 +99,4 @@ crossorigin: "" | anonymous | (use - credentials);
   可以通过 webpack webpack-subresource-integrity 插件实现 integrity 实现添加过程。
   开启 SRI，浏览器会对相关资源进行 CORS 检查。至此，当资源内容被劫持篡改时，浏览器校验签名不匹配将使得异常资源不被执行，并触发加载失败。从而进入到资源加载失败的监控流程中，最终可以通过切换 CDN 域名或主域名进行加载重试，直到加载上正确资源，避免资源被劫持篡改内容后注入广告或白屏等情况。
   HTTPS 可以有效应对流量劫持的问题，SRI 在资源完整性再上一道屏障，CSP 也进行了其他方面的补充。“三驾马车” 为页面资源安全 “保驾护航”。
+  
