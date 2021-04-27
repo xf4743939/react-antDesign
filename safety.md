@@ -70,9 +70,9 @@ XST(跨站追踪)攻击，关闭 Web 服务器的 TRACE 方法
 标记为 Secure 的 Cookie 只应通过被 HTTPS 协议加密过的请求发送给服务端
 HttpOnly 属性可防止通过 javascript 访问 cookie 值
 SameSite 属性 允许服务器要求某个 cookie 在跨站请求时不会被发送,从而可以阻止跨站请求伪造攻击(CSRF)
-
-1. SameSite=None:浏览器会在同站请求、跨站请求下继续发送 cookies,不区分大小写
-2. SameSite=Strict:浏览器将只在访问相同站点时发送 cookie。（在原有 Cookies 的限制条件上的加强，如上文 “Cookie 的作用域” 所述）
+Cookie 的SameSite属性用来限制第三方 Cookie，从而减少安全风险
+1. SameSite=None:浏览器会在同站请求、跨站请求下继续发送 cookies,不区分大小写 
+2. SameSite=Strict:浏览器将只在访问相同站点时发送 cookie。（在原有 Cookies 的限制条件上的加强，如上文 “Cookie 的作用域” 所述）; 这个规则过于严格，可能造成非常不好的用户体验。比如，当前网页有一个 GitHub 链接，用户点击跳转就不会带有 GitHub 的 Cookie，跳转过去总是未登陆状态。
 3. SameSite=Lax:但只有当用户从外部站点导航到 URL 时才会发送。如 link 链接
 
 ```JS
