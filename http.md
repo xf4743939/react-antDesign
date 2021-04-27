@@ -24,6 +24,11 @@ http 协议原理+实践 web（视频开完）
 8. Origin:<https://gz.meituan.com>
 9. Referer:<https://gz.meituan.com/>
 10. User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
+cors 请求有
+Vary:Origin:可以让同一个URL 有多份缓存
+原理：是让同一个 URL 根据某个请求头的不同而使用不同的缓存
+比如: Vary: Accept-Encoding表示客户端要根据Accept-Encoding请求头的不同而使用不同的缓存
+在 CORS 的场景下，我们需要使用Vary: Origin来保证不同网站发起的请求使用各自的缓存
 
 ### Response Header 部分
 
