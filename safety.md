@@ -1,6 +1,6 @@
 # 前端安全性
 
-腾讯大牛亲授漏洞防御(3-7 看完)
+腾讯大牛亲授漏洞防御(4-2 看完)
 
 ## xss 处理(Cross Site Scripting) 跨站脚本攻击
 
@@ -39,6 +39,8 @@
 
 会话劫持和 XSS：
 常用的窃取 Cookie 的方法有利用社会工程学攻击和利用应用程序漏洞进行 XSS (en-US) 攻击。
+content-security-policy
+CSP 的实质就是白名单制度，开发者明确告诉客户端，哪些外部资源可以加载和执行，等同于提供白名单。它的实现和执行全部由浏览器完成，开发者只需提供配置。
 
 ```js
 // HttpOnly 类型的 Cookie 用于阻止了JavaScript 对其的访问性而能在一定程度上缓解此类攻击。
@@ -56,6 +58,13 @@ XST(跨站追踪)攻击，关闭 Web 服务器的 TRACE 方法
 
 ## CSRF 攻击的防御
 
+Cross Site Request Forgy(跨站请求伪造)
+CSRF 攻击的危害
+
+1. 利用用户登录态
+2. 用户不知情
+3. 盗取用户资金转账消费
+
 - 令牌同步模式(tokie)
   原理:令牌可以通过任何方式生成，只要确保随机性和唯一性.这样确保攻击者发送请求时候，由于没有该令牌而无法通过验证。
 - 检查 Referer 字段
@@ -70,8 +79,9 @@ XST(跨站追踪)攻击，关闭 Web 服务器的 TRACE 方法
 标记为 Secure 的 Cookie 只应通过被 HTTPS 协议加密过的请求发送给服务端
 HttpOnly 属性可防止通过 javascript 访问 cookie 值
 SameSite 属性 允许服务器要求某个 cookie 在跨站请求时不会被发送,从而可以阻止跨站请求伪造攻击(CSRF)
-Cookie 的SameSite属性用来限制第三方 Cookie，从而减少安全风险
-1. SameSite=None:浏览器会在同站请求、跨站请求下继续发送 cookies,不区分大小写 
+Cookie 的 SameSite 属性用来限制第三方 Cookie，从而减少安全风险
+
+1. SameSite=None:浏览器会在同站请求、跨站请求下继续发送 cookies,不区分大小写
 2. SameSite=Strict:浏览器将只在访问相同站点时发送 cookie。（在原有 Cookies 的限制条件上的加强，如上文 “Cookie 的作用域” 所述）; 这个规则过于严格，可能造成非常不好的用户体验。比如，当前网页有一个 GitHub 链接，用户点击跳转就不会带有 GitHub 的 Cookie，跳转过去总是未登陆状态。
 3. SameSite=Lax:但只有当用户从外部站点导航到 URL 时才会发送。如 link 链接
 
@@ -81,8 +91,9 @@ Set-Cookie: sessionId=e8bb43229de9; Domain=foo.example.com
 ```
 
 ## 提高资源的安全性-SRI(Subresource Integrity) 与 CSP
+
 1. 首先需要服务器开启内容安全策略即:Content-Security-Policy: require-sri-for script;
-2. 加入integrity 值
+2. 加入 integrity 值
 
 ```js
 <script
@@ -101,4 +112,3 @@ crossorigin: "" | anonymous | (use-credentials) 请求头都会带上Origin 属�
   可以通过 webpack webpack-subresource-integrity 插件实现 integrity 实现添加过程。
   开启 SRI，浏览器会对相关资源进行 CORS 检查。至此，当资源内容被劫持篡改时，浏览器校验签名不匹配将使得异常资源不被执行，并触发加载失败。从而进入到资源加载失败的监控流程中，最终可以通过切换 CDN 域名或主域名进行加载重试，直到加载上正确资源，避免资源被劫持篡改内容后注入广告或白屏等情况。
   HTTPS 可以有效应对流量劫持的问题，SRI 在资源完整性再上一道屏障，CSP 也进行了其他方面的补充。“三驾马车” 为页面资源安全 “保驾护航”。
-  
