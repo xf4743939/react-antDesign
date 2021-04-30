@@ -146,4 +146,8 @@ window.addEventListener(
     所以我们需要在业务逻辑执行前，保证所依赖的 external 都加载完成。最终通过开发 wait-external-webpack-plugin webpack 插件，在构建时分析所依赖的 external，并注入监控代码，等待所有依赖的文件都加载完成后再统一顺序执行
  ## link 元素rel 属性
  link 元素的rel属性的属性值preload能够让你在HTML页面中head元素内部书写一些声明式的资源获取请求,可以指明哪些资源是在页面加载完成后即刻需要的.对于这种即刻需要的资源,你可能希望在页面加载的生命周期的早期阶段就开始获取,在浏览器的主渲染机制介入前就进行预加载.这一机制使得资源可以更早的得到加载并可用，且更不易阻塞页面的初步渲染，进而提升性能.
- 
+## <!DOCTYPE html>是什么意思?
+它是html5标准网页申明全称为Document Type HyperText Mark-up Language 为超文本标记性语言.申明在文档中最前面的位置，此标签告知浏览器文档使用HTML或XHTML规范。
+1.作用:声明文档的解析类型(document.compatMode),避免浏览器的怪异模式.
+BackCompat:怪异模式,浏览器使用自己的怪异模式解析渲染页面.
+css1Compat:标准模式,浏览器使用W3c的标准解析渲染页面.
