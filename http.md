@@ -24,11 +24,11 @@ http 协议原理+实践 web（视频开完）
 8. Origin:<https://gz.meituan.com>
 9. Referer:<https://gz.meituan.com/>
 10. User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.128 Safari/537.36
-cors 请求有
-Vary:Origin:可以让同一个URL 有多份缓存
-原理：是让同一个 URL 根据某个请求头的不同而使用不同的缓存
-比如: Vary: Accept-Encoding表示客户端要根据Accept-Encoding请求头的不同而使用不同的缓存
-在 CORS 的场景下，我们需要使用Vary: Origin来保证不同网站发起的请求使用各自的缓存
+    cors 请求有
+    Vary:Origin:可以让同一个 URL 有多份缓存
+    原理：是让同一个 URL 根据某个请求头的不同而使用不同的缓存
+    比如: Vary: Accept-Encoding 表示客户端要根据 Accept-Encoding 请求头的不同而使用不同的缓存
+    在 CORS 的场景下，我们需要使用 Vary: Origin 来保证不同网站发起的请求使用各自的缓存
 
 ### Response Header 部分
 
@@ -117,6 +117,10 @@ A[ 应用层 ] --> B[传输层] --> C[网路层] --> D[数据链路层] --> E[�
 
 ## WebSocket 与 HTTP
 
+- 即时通信实现原理:
+
+1. ajax 轮询,使用定时器每隔 1s 时间发送 ajax 到后台
+
 webSocket 协议 2008 年诞生,2011 年成为国际标准.webSocket 最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息,是真正的双向平等对话。
 http1.0 和 1.1 所为的 keep-alive,吧多个 HTTP 请求合并为一个。websocket 为了兼容现有浏览器,所以在握手阶段使用了 HTTP.
 WebSocket 的其他特点：
@@ -185,6 +189,7 @@ WebSocket 的其他特点：
 - 304: 服务器资源未改变,可直接使用客户端未过期的缓存
 - 400:表示请求的报文存在语法错误;比如 url 含有非法字符、提交 json 数据格式错误
 - 405: 请求的方式(get、post、delete)方法与后台规定的方式不符合
+- 412: 便是客户端错误,意味着对于目标资源的访问请求被拒绝
 - 415: 后台程序不支持提交的 content-type
 
 ## cookie、session 和 localStorage

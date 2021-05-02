@@ -1,8 +1,11 @@
 # 前端性能优化(慕课网-前端性能优化企业级解决方案)
 
-## 进度(第二章)
+## 进度(第 4 章看完了)
 
 ## 性能优化指标与测量工具
+
+谷歌开发者工具(Lighthouse)
+Speed Index(低于 4s)性能好
 
 - 行业标准
 - 优化模型
@@ -12,8 +15,25 @@
 ## 代码优化
 
 - javascript 优化
+  vb 引擎会把 js-> parse it ->ast 语法树(Abstract syntax Tree)
+  - . 加载、编译、解析(js 很耗时)、执行
+    压缩 js 减少下载时间
+    解决方案：
+    > > code splitting 代码拆分,按需加载
+    > > Tree shaking 代码减重
+    > > 使用 raf 和 rIc 进行时间调度
+    > > 建设首屏加载量
 - html 优化
+  > > 减少 iframes 使用(会阻塞页面加载);如果想用用延时加载
+  > > 压缩空白符(打包解除空白符)
+  > > 避免节点深层嵌套
+  > > 避免 table 布局
+  > > 删除注释
+  > > css&javascript 尽量外链
+  > > 删除元素默认属性
 - css 优化
+  > > 降低 css 对渲染的阻塞
+  > > 利用 GPU 进行完成动画
 
 ## 渲染优化
 
@@ -144,10 +164,39 @@ window.addEventListener(
     在不需要考虑兼容性的情况下，资源加载失败时通过 document.write 写入新的 script 标签，可以阻塞后续 script 脚本的执行，直到新标签加载并执行完毕，从而保证原来的顺序。但它在 IE、Edge 却无法正常工作，满足不了我们项目的兼容性。于是我们需要增加 “管理 JS 执行顺序” 的逻辑。使 JS 文件加载完成后，先检查所依赖的文件是否都加载完成，再执行业务逻辑。当存在加载失败时，则会等待文件加载完成后再执行，从而保证正常执行。
     然而，在默认情况下，业务代码的执行不会判断配置的 external 模块是否存在。所以当 external 文件未加载完成或加载失败时，使用对应模块将会导致报错。
     所以我们需要在业务逻辑执行前，保证所依赖的 external 都加载完成。最终通过开发 wait-external-webpack-plugin webpack 插件，在构建时分析所依赖的 external，并注入监控代码，等待所有依赖的文件都加载完成后再统一顺序执行
- ## link 元素rel 属性
- link 元素的rel属性的属性值preload能够让你在HTML页面中head元素内部书写一些声明式的资源获取请求,可以指明哪些资源是在页面加载完成后即刻需要的.对于这种即刻需要的资源,你可能希望在页面加载的生命周期的早期阶段就开始获取,在浏览器的主渲染机制介入前就进行预加载.这一机制使得资源可以更早的得到加载并可用，且更不易阻塞页面的初步渲染，进而提升性能.
+
+## link 元素 rel 属性
+
+link 元素的 rel 属性的属性值 preload 能够让你在 HTML 页面中 head 元素内部书写一些声明式的资源获取请求,可以指明哪些资源是在页面加载完成后即刻需要的.对于这种即刻需要的资源,你可能希望在页面加载的生命周期的早期阶段就开始获取,在浏览器的主渲染机制介入前就进行预加载.这一机制使得资源可以更早的得到加载并可用，且更不易阻塞页面的初步渲染，进而提升性能.
+
 ## <!DOCTYPE html>是什么意思?
-它是html5标准网页申明全称为Document Type HyperText Mark-up Language 为超文本标记性语言.申明在文档中最前面的位置，此标签告知浏览器文档使用HTML或XHTML规范。
-1.作用:声明文档的解析类型(document.compatMode),避免浏览器的怪异模式.
+
+它是 html5 标准网页申明全称为 Document Type HyperText Mark-up Language 为超文本标记性语言.申明在文档中最前面的位置，此标签告知浏览器文档使用 HTML 或 XHTML 规范。 1.作用:声明文档的解析类型(document.compatMode),避免浏览器的怪异模式.
 BackCompat:怪异模式,浏览器使用自己的怪异模式解析渲染页面.
-css1Compat:标准模式,浏览器使用W3c的标准解析渲染页面.
+css1Compat:标准模式,浏览器使用 W3c 的标准解析渲染页面.
+
+## 浏览器渲染原理
+
+浏览器把文本解析成识别的代码
+js -> style -> Layout(布局) -> paint(把文字图片画到屏幕上) -> composite(合成层)
+有些动画可以走 GPU 加速通过直接走合成层 composite
+
+## 布局与绘制
+
+- 回流操作
+
+1. 添加/删除元素
+2. 操作 styles
+3. display:none
+4. offsetLeft、scrollTop、clientWidth
+5. 修改浏览器、字体大小
+   **回流有可能触发布局抖动 layout thrashing**
+   fastDom 做读写的分离
+
+## 复合线程(compositor thread) 与图层 Layers
+
+```css
+transform, opacity;
+```
+
+复合线程做什么? 将页面拆分图层进行绘制再进行复合

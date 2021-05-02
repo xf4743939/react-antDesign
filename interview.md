@@ -1,5 +1,7 @@
 # 面试总结
 
+B 站 2021 前端面试必刷(p18 没看)
+
 ## MVC、MVP、MVVM，我到底该怎么选？
 
 ### mvc
@@ -13,9 +15,12 @@ button 点击事件触发:view->Controller 获取用户信息事件的触发：c
 ### MVP
 
 ## 前端跨域解决方案
+
 造成跨域的两种策略:
-- DOM同源策略：禁止对不同源页面DOM进行操作。这里主要场景是iframe跨域的情况，不同域名的iframe是限制互相访问的。
-- XmlHttpRequest同源策略：禁止使用XHR对象向不同源的服务器地址发起HTTP请求
+
+- DOM 同源策略：禁止对不同源页面 DOM 进行操作。这里主要场景是 iframe 跨域的情况，不同域名的 iframe 是限制互相访问的。
+- XmlHttpRequest 同源策略：禁止使用 XHR 对象向不同源的服务器地址发起 HTTP 请求
+
 1.  JSONP 实现跨域请求原理就是动态创建 script,然后利用 script 的 scr 不受同源策略约束来跨域获取数据。jsonp 只要由回调函数和数据两部分组成。回调的函数名字一般在请求中指定。而数据就是传入回调函数中的 json 数据.
 2.  cors 跨域：原理在服务端设置响应头 header 的 Access-control-Allow-origin 字段,这样浏览器检测到 header 中的 Access-Control-Allow-Origin,这样就可以跨域. 设置了 cors 之后 network 会出现两次请求问题，第一次 OPTIONS 方法 请求预检,分别为简单请求和非简单请求两种. HTTP 头来告诉浏览器让运行在一个 origin(domin) 上 web 应用被准许访问来自不同源服务器上的指定资源.
 3.  postMessage 实现跨域 window.open 或 iframe.contentWindow 引用调用
@@ -92,16 +97,73 @@ function myNew() {
   return ret instanceof Object ? ret : obj;
 }
 ```
+
 ## vue-router 完整的导航解析流程
+
 1. 导航被触发
-2. 在失活的组件里调用beforeRouteLeave 守卫
-3. 调用全局beforeEach 守卫
-4. 在重用组件里调用beforeRouteUpdate守卫
-5. 在路由配置里调用beforeEnter
+2. 在失活的组件里调用 beforeRouteLeave 守卫
+3. 调用全局 beforeEach 守卫
+4. 在重用组件里调用 beforeRouteUpdate 守卫
+5. 在路由配置里调用 beforeEnter
 6. 解析异步路由组件
-7. 在被激活的组件里调用beforeRouteEnter
-8. 调用全局beforeResolve守卫
+7. 在被激活的组件里调用 beforeRouteEnter
+8. 调用全局 beforeResolve 守卫
 9. 导航被确认
-10. 调用全局的affterEach 钩子
-11. 触发DOM 更新
-12. 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。 
+10. 调用全局的 affterEach 钩子
+11. 触发 DOM 更新
+12. 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+
+## 移动端兼容性
+
+- 禁止图片点击放大
+  部分安卓手机点击图片会放大设置 css 属性
+
+```js
+// 这个会让img标签的点击事件失效
+img{
+  pointer-events:none
+}
+```
+
+- 禁止 IOS 识别长串数字为电话
+
+```html
+<meta name="format-detection" content="telephone=no" />
+```
+
+- 禁止复制选中文本
+
+```CSS
+ webkit-user-select:none
+```
+
+- 上下拉动滚动条卡顿
+
+```CSS
+body{
+  -webkit-overflow-scrolling:touch;
+  overflow-scrolling:touch
+}
+```
+
+## hybrid app
+
+1. 有安卓 ios 程序员写一部分,然后你写 HTML 代码,给 ios 或者安卓嵌套进去
+2. 直接 HTML 网站,给他打包嵌套一个 app 壳(在壳里面,其实就只做了一个内嵌浏览器)
+
+## 浏览器输入 url 发生了什么？
+
+1. 对输入网址进行 DNS 域名解析,得到对应的 ip 地址
+2. 根据这个 ip,找到对应的服务器,发起 TCP 的三次握手
+3. 建立 TCP 连接后发起 HTTP 请求
+4. 服务器响应 HTTP 请求,浏览器得到 HTML 代码
+5. 浏览器解析 HTML 代码,并请求 HTML 代码中的资源(js、css、图片)(解析 HTML 可以详细说)
+6. 浏览器对页面进行渲染呈现给用户
+7. 服务器关闭 TCP 连接
+
+## DNS 解析(域名解析服务器)
+
+1. 首先会搜索浏览器自身的 DNS 缓存(缓存时间比较短,大概只有 1 分钟,且只能容纳 1000 条缓存)
+2. 如果浏览器自身的缓存里面没有找到,那么浏览器会搜索操作系统自身的 DNS 缓存
+3. 如果还没有找到,那么尝试从 hosts 文件里面去找
+4. 在前面三个过程都没获取到的情况下,就递归地去域名服务器去查找
