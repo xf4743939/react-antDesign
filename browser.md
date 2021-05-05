@@ -1,61 +1,83 @@
 # 浏览器原理
+
 ## 浏览器种类
-Internet Explorer，Firefox，Safari，Chrome和Opera
+
+Internet Explorer，Firefox，Safari，Chrome 和 Opera
+
 ## 浏览器主要功能
-浏览器的主要功能是通过向服务器请求并在浏览器窗口中来显示您选择的Web资源.资源格式通常是HTML,但是也可以是PDF,图像等.资源的位置由用户使用URI(统一资源标识符)指定
-- 用户插入URI的地址栏
+
+浏览器的主要功能是通过向服务器请求并在浏览器窗口中来显示您选择的 Web 资源.资源格式通常是 HTML,但是也可以是 PDF,图像等.资源的位置由用户使用 URI(统一资源标识符)指定
+
+- 用户插入 URI 的地址栏
 - 前进和后台按钮
 - 书签选项
 - 刷新和停止按钮
+
 ## 浏览器高级结构
+
 1. 用户界面-包括地址栏，后退/前进按钮，书签菜单等。浏览器的每个部分都会显示，但在主窗口中您可以看到所请求的页面.
 2. 浏览器引擎-用于查询和操作渲染引擎的界面.
-3. 呈现引擎-负责显示请求的内容。例如，如果所请求的内容是HTML，则它负责解析HTML和CSS并在屏幕上显示已解析的内容
-4. 联网-用于网络调用，例如HTTP请求。它具有独立于平台的界面，并且在每个平台的实施之下。
-5. UI后端-用于绘制基本小部件，例如组合框和窗口。它公开了不是平台特定的通用接口。它的下面使用操作系统的用户界面方法。
-6. JavaScript解释器。用于解析和执行JavaScript代码。
-7. 数据存储。这是一个持久层。浏览器需要将各种数据保存在硬盘上，例如cookie。新的HTML规范（HTML5）定义了“网络数据库”，它是浏览器中完整的数据库（尽管很轻
-## 浏览器是如何渲染UI的
-1. 浏览器获取HTML文件,然后对文件进行解析,形式DOMTree
-2. 与此同时,进行css解析,生成Style Rules
-3. 接着Dom tree 与Style Rules 合成为 Render Tree.
+3. 呈现引擎-负责显示请求的内容。例如，如果所请求的内容是 HTML，则它负责解析 HTML 和 CSS 并在屏幕上显示已解析的内容
+4. 联网-用于网络调用，例如 HTTP 请求。它具有独立于平台的界面，并且在每个平台的实施之下。
+5. UI 后端-用于绘制基本小部件，例如组合框和窗口。它公开了不是平台特定的通用接口。它的下面使用操作系统的用户界面方法。
+6. JavaScript 解释器。用于解析和执行 JavaScript 代码。
+7. 数据存储。这是一个持久层。浏览器需要将各种数据保存在硬盘上，例如 cookie。新的 HTML 规范（HTML5）定义了“网络数据库”，它是浏览器中完整的数据库（尽管很轻
+
+## 浏览器是如何渲染 UI 的
+
+1. 浏览器获取 HTML 文件,然后对文件进行解析,形式 DOMTree
+2. 与此同时,进行 css 解析,生成 Style Rules
+3. 接着 Dom tree 与 Style Rules 合成为 Render Tree.
 4. 接着进入布局(Layout)阶段,也就是为每个节点分配一个应出现在屏幕上的确切坐标
-5. 随后调用GPU进行绘制(Paint),遍历Render Tree节点，并将元素呈现出来.
-## 浏览器如何解析CSS选择器
-浏览器会从右往左解析css 选择器
+5. 随后调用 GPU 进行绘制(Paint),遍历 Render Tree 节点，并将元素呈现出来.
+
+## 浏览器如何解析 CSS 选择器
+
+浏览器会从右往左解析 css 选择器
 是因为从右向左的匹配在第一步就筛选掉了大量的不符合条件的最右节点（叶子节点）；而从左向右的匹配规则的性能都浪费在了失败的查找上面。
-## DOM Tree是如何构建的
-1. 转码：浏览器将接收到的二进制数据按照编码格式转化为HTML字符串
-2. 生成Tokens: 之后开始parser，浏览器会将HTML字符串解析成Tokens
-3. 构建Nodes: 对Node添加特定的属性，通过指针确定 Node 的父、子、兄弟关系和所属 treeScope
-4. 生成DOM Tree: 通过node包含的指针确定的关系构建出DOM Tree
+
+## DOM Tree 是如何构建的
+
+1. 转码：浏览器将接收到的二进制数据按照编码格式转化为 HTML 字符串
+2. 生成 Tokens: 之后开始 parser，浏览器会将 HTML 字符串解析成 Tokens
+3. 构建 Nodes: 对 Node 添加特定的属性，通过指针确定 Node 的父、子、兄弟关系和所属 treeScope
+4. 生成 DOM Tree: 通过 node 包含的指针确定的关系构建出 DOM Tree
+
 ## 浏览器重绘与重排的区别
+
 - 重排
-部分渲染树（或者整个渲染树）需要重新分析并且节点尺寸需要重新计算，表现为重新生成布局，重新排列元素
+  部分渲染树（或者整个渲染树）需要重新分析并且节点尺寸需要重新计算，表现为重新生成布局，重新排列元素
 - 重绘
-由于节点的几何属性发生改变或者由于样式发生改变，例如改变元素背景色时，屏幕上的部分内容需要更新，表现为某些元素的外观被改变
-重排和重绘代价是高昂的，它们会破坏用户体验，并且让UI展示非常迟缓，而相比之下重排的性能影响更大，在两者无法避免的情况下，一般我们宁可选择代价更小的重绘。
+  由于节点的几何属性发生改变或者由于样式发生改变，例如改变元素背景色时，屏幕上的部分内容需要更新，表现为某些元素的外观被改变
+  重排和重绘代价是高昂的，它们会破坏用户体验，并且让 UI 展示非常迟缓，而相比之下重排的性能影响更大，在两者无法避免的情况下，一般我们宁可选择代价更小的重绘。
+
 ## 如何触发重排和重绘
-1. 添加、删除、更新DOM节点
-2. 通过display: none隐藏一个DOM节点-触发重排和重绘
-3. 通过visibility: hidden隐藏一个DOM节点-只触发重绘，因为没有几何变化
-4. 移动或者给页面中的DOM节点添加动画
+
+1. 添加、删除、更新 DOM 节点
+2. 通过 display: none 隐藏一个 DOM 节点-触发重排和重绘
+3. 通过 visibility: hidden 隐藏一个 DOM 节点-只触发重绘，因为没有几何变化
+4. 移动或者给页面中的 DOM 节点添加动画
 5. 添加一个样式表，调整样式属性
 6. 用户行为，例如调整窗口大小，改变字号，或者滚动。
-## 何避免重绘或者重排
-1. 集中改变样式：通过改变class的方式来集中改变样式
-2. reateDocumentFragment创建一个游离于DOM树之外的节点，然后在此节点上批量操作，最后插入DOM树中，因此只触发一次重排
-```js
- var fragment = document.createDocumentFragment();
-  for (let i = 0;i<10;i++){
-    let node = document.createElement("p");
-    node.innerHTML = i;
-    fragment.appendChild(node);
-  }
 
-  document.body.appendChild(fragment);
- ```
- 3. 提升为合成层
-   - 合成层的位图，会交由 GPU 合成，比 CPU 处理要快
-   - 当需要 repaint 时，只需要 repaint 本身，不会影响到其他的层
-   - 对于 transform、opacity、filters、Will-change ，不会触发 layout 和 paint
+## 何避免重绘或者重排
+
+1. 集中改变样式：通过改变 class 的方式来集中改变样式
+2. reateDocumentFragment 创建一个游离于 DOM 树之外的节点，然后在此节点上批量操作，最后插入 DOM 树中，因此只触发一次重排
+
+```js
+var fragment = document.createDocumentFragment();
+for (let i = 0; i < 10; i++) {
+  let node = document.createElement("p");
+  node.innerHTML = i;
+  fragment.appendChild(node);
+}
+
+document.body.appendChild(fragment);
+```
+
+3.  提升为合成层
+
+- 合成层的位图，会交由 GPU 合成，比 CPU 处理要快
+- 当需要 repaint 时，只需要 repaint 本身，不会影响到其他的层
+- 对于 transform、opacity、filters、Will-change ，不会触发 layout 和 paint

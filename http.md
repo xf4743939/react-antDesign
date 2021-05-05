@@ -1,6 +1,45 @@
 # http 协议原理
 
+学习书籍:计算机图形学
 http 协议原理+实践 web（视频开完）
+大话 HTTP 协议(4-7 没看完)
+
+## http 特点
+
+- 支持客户/服务器模式
+  客户/服务器模式工作的方式是由客户端向服务器发出请求,服务器端响应请求,并进行相应服务
+- 简单快速
+- 灵活
+  http 允许传输任意类型的数据对象
+- 无连接
+  无连接的含义是限制每次连接只处理一个请求;服务器处理完客户的请求,并收到客户的应答后,即断开连接
+- 无状态
+
+## cookie、session 和 localStorage
+
+- cookie
+  cookie 可以是 http 有状态能记忆
+  大小小于 4kb,尽量保证 cookie 个数小于 20 个
+  max-age 和 expires 设置过期时间; Secure 只在 https 的时候发送; HttpOnly 无法通过 js 中 document.cookie 访问．
+  验证原理是通过 header 里 host 字段
+  cookie 没有设置过期时间,默认浏览器关闭了就失效了
+  二级域名(test.a.com)可以访问到一级域名(a.com)里 cookie;
+  lisp.com 这种形式的域名才是一级域名;lisp 是域名主体，.com 是域名后缀，可以是.net 也是域名后缀
+  二级域名是一个一级域名下面的主机名，它是在一级域名前面加上一个字符串 asdx.lisp.com
+  不能跨域设置 cookie 如不能 a.test.come 不能给 test.com 设置 cookie;二级域名是可以访问到一级域名下的 cookie; 服务端设置 cookie 时设置 domain=test.com;
+  经常用 cookie 保持 session
+- session
+  数据保存在服务端
+- localStorage
+  本地存储接触 cookie 4kb 的限制,一般大小为 5M,只支持 string 类型的存储,没有时间限制
+  局限性:
+  1. 浏览器的大小不统一,并且 IE8 以上版本才支持 localStorage 这个属性
+  2. localStorage 在浏览器的隐私模式下面是不可读取的
+  3. localStorage 不能被爬虫抓取到
+  4. localStorage 的使用也是遵循同源策略的，所以不同的网站直接是不能共用相同的 localStorage
+     localStorage 和 sessionStorage 区别
+     同一浏览器的相同域名和端口的不同页面间可以共享相同的 localStorage,但是不同页面间无法共享 sessionStorage 的信息.
+     http://www.a.com/a.js 和 http://script.a.com/b.js 主域相同,子域不同 不允许通讯
 
 ## http 请求头返回头
 
@@ -46,6 +85,18 @@ http 协议原理+实践 web（视频开完）
 - AJAX 获取数据
 - img 标签加载图片
 
+## http 协议的瓶颈
+
+1. 一条连接只发送一个请求
+2. 请求只能从客户端开始。客户端不可以接受出响应以外的指令
+3. 请求/响应头部不经压缩就发送
+4. 每次互相发送相同的头部造成的浪费较多
+5. 非强制压缩发送
+
+## TCP/IP 协议族分层
+
+TCP/IP 协议族是由一个四层协议组成的系统:应用层、传输层、网络层、数据链路层
+
 ## 网络模型
 
 ```mermaid
@@ -67,12 +118,14 @@ A[ 应用层 ] --> B[传输层] --> C[网路层] --> D[数据链路层] --> E[�
 
 ## HTTP/1.0
 
+- 默认适用的是短连接。也就是说,浏览器和服务器没进行一次 HTTP 操作,就建立一次连接,结束就中断
 - 增加了很多命令
 - 增加 status code 和 header
 - 多字符集支持、多部分发送、权限、缓存等
 
 ## Http/1.1
 
+增加了长连接
 浏览器允许 tcp 一次并发创建 6 个
 有一定顺序请求在 tcp 上
 连接不能并发请求加载数据有先后顺序
@@ -83,7 +136,12 @@ A[ 应用层 ] --> B[传输层] --> C[网路层] --> D[数据链路层] --> E[�
 
 ## HTTP2
 
-优势:
+- 缺点:
+
+1. 队头阻塞
+2. 建立连接的握手延迟大
+
+- 优势:
 
 1. 信道复用
 2. 分帧传输
@@ -97,7 +155,10 @@ A[ 应用层 ] --> B[传输层] --> C[网路层] --> D[数据链路层] --> E[�
 
 ## https
 
+HTTP+TLS(传输层加密协议)
+
 - 加密
+  对称加密和非对称加密
   公钥私钥主要用在三次握手中
   1. 私钥:只会放到服务器上
   2. 公钥
@@ -106,13 +167,17 @@ A[ 应用层 ] --> B[传输层] --> C[网路层] --> D[数据链路层] --> E[�
   2. 服务端也生成一个随机数 Random 选择一个客户端支持的加密套件;并发送一个证书(公钥)
   3. 客户端拿到证书后,发送加密后的随机数
   4. 服务的拿到私密钥进行解密
+- https 对性能的影响
+  网络耗时 RTT
 
 ## 为什么要三次握手
 
+三次可以确定自己的发送和接受数据的能力
 防止服务端开启无用的连接
 
 ## URI(uniform Resource identifier) 统一资源标志符
 
+URN：好像一个人名字,URL 就像一个人的地址
 用来唯一标识互联网上的信息资源;包含 URL(Uniform Resource Locator)和 URN(永久统一资源定位符)在资源移动之后还能被找到
 
 ## WebSocket 与 HTTP
@@ -146,30 +211,50 @@ WebSocket 的其他特点：
 缺点：少部分浏览器不支持,浏览器支持的程度与方式有区别
 运用场景：即时聊天通信、多玩家游戏、在线协调编辑、实时数据流的拉取与推送、实时地图位置
 
+## http 报文头分四类
+
+通用报文头、请求报文头、响应报文头、实体报文头
+
+- 通用报文头
+
+  - Cache-Control:
+
+  1. no-cache:缓存,但是浏览器适用缓存前,都会请求服务器判断缓存资源是否是最新的
+  2. no-store:没有任何缓存 浏览器和代理服务器都不缓存
+
+  - Connection
+  - Via:为了追踪请求和响应报文测传输路径
+  - pragma
+  - Date
+
+- 实体报文头
+  - allow:服务器通知客户端服务器这边所支持的请求方法;服务器找不到请求方法就返回 405
+  - content-Encoding:说明报文实体的编码方法
+  - content-language
+
 ## Cache-Control 含义和使用
 
 - 可缓存行
 
 1. public:客户端和服务器都可以缓存(http 任何地方都可以缓存)
-2. private(只有浏览器缓存)代理服务器不能缓存
+2. private(只有浏览器客户端缓存)代理服务器不能缓存
 3. no-cache(本地可以存储缓存但是要服务器验证才能用)
 
 - 到期
 
-1. max-age
-2. s-maxage: 设置代理服务器缓存时间
+1. max-age:请求缓存后 x 秒不再发起请求
+2. s-maxage: 设置代理服务器缓存时间(只对 CDN 缓存有效)
 3. max-stale
 
 - 重新验证
 
-1. must-revalidate
-2. proxy-revalidate
+1. must-revalidate:表示缓存服务器在返回资源是,必须向资源服务器确认其缓存的有效性
+2. proxy-revalidate:代理服务器响应浏览器，要求其提供代理身份验证信息
 
 - 其他
 
-1. no-store:没有任何缓存 浏览器和代理服务器都不缓存
-2. no-transform
-3. vary:自定义头,每次请求自定义头相同才会缓存
+1. no-transform:无论请求还是响应,都不能在传输的过程中改变报文体的媒体类型
+2. vary:自定义头,每次请求自定义头相同才会缓存
 
 ## Last-modified(上次修改的时间) 和 Etag 使用
 
@@ -182,47 +267,31 @@ WebSocket 的其他特点：
 
 新 url 表示第一次请求返回的 location
 
+- 202 已接受,但是未处理完成
+- 206 客户端只想请求部分内容,服务器成功处理了部分 get 请求(断点续传)
 - 301: 永久重定向,表示请求的资源分配了新 url,以后应该使用新 URl,
 - 302: 临时重定向,表示资源临时分配了新 url,本次请求暂且使用新 url.
 - 301 和 302 区别: 302 临时性重定向，重定向的 url 还有可能还会该改变
 - 303:表示请求资源路径发送改变,使用 GET 方法请求新 URL.
 - 304: 服务器资源未改变,可直接使用客户端未过期的缓存
+- 403: 服务器理解请求客户端请求,但是拒绝执行此请求
 - 400:表示请求的报文存在语法错误;比如 url 含有非法字符、提交 json 数据格式错误
 - 405: 请求的方式(get、post、delete)方法与后台规定的方式不符合
+- 406 服务器无法返回莫类型的数据
 - 412: 便是客户端错误,意味着对于目标资源的访问请求被拒绝
-- 415: 后台程序不支持提交的 content-type
-
-## cookie、session 和 localStorage
-
-- cookie
-  大小小于 4kb,尽量保证 cookie 个数小于 20 个
-  max-age 和 expires 设置过期时间; Secure 只在 https 的时候发送; HttpOnly 无法通过 js 中 document.cookie 访问．
-  验证原理是通过 header 里 host 字段
-  cookie 没有设置过期时间,默认浏览器关闭了就失效了
-  二级域名(test.a.com)可以访问到一级域名(a.com)里 cookie;
-  lisp.com 这种形式的域名才是一级域名;lisp 是域名主体，.com 是域名后缀，可以是.net 也是域名后缀
-  二级域名是一个一级域名下面的主机名，它是在一级域名前面加上一个字符串 asdx.lisp.com
-  不能跨域设置 cookie 如不能 a.test.come 不能给 test.com 设置 cookie;二级域名是可以访问到一级域名下的 cookie; 服务端设置 cookie 时设置 domain=test.com;
-  经常用 cookie 保持 session
-- session
-  数据保存在服务端
-- localStorage
-  本地存储接触 cookie 4kb 的限制,一般大小为 5M,只支持 string 类型的存储,没有时间限制
-  局限性:
-  1. 浏览器的大小不统一,并且 IE8 以上版本才支持 localStorage 这个属性
-  2. localStorage 在浏览器的隐私模式下面是不可读取的
-  3. localStorage 不能被爬虫抓取到
-  4. localStorage 的使用也是遵循同源策略的，所以不同的网站直接是不能共用相同的 localStorage
-     localStorage 和 sessionStorage 区别
-     同一浏览器的相同域名和端口的不同页面间可以共享相同的 localStorage,但是不同页面间无法共享 sessionStorage 的信息.
-     http://www.a.com/a.js 和 http://script.a.com/b.js 主域相同,子域不同 不允许通讯
+- 413:服务器拒绝处理当前请求，因为该请求提交的实体数据大小超过了服务器愿意或者能够处理的范围
+- 414:请求的 URI 长度超过了服务器能够解释的长度，因此服务器拒绝对该请求提供服务
+- 415: 对于当前请求的方法和所请求的资源，请求中提交的实体并不是服务器中所支持的格式，因此请求被拒绝
+- 502: 充当网关或代理服务器,从远端服务器接受了一个无效的请求
+- 503: 服务器当前不能处理客户端的请求，一段时间后可能恢复正常，
+- 504:作为网关或者代理工作的服务器尝试执行请求时，未能及时从上游服务器（URI 标识出的服务器，例如 HTTP、FTP、LDAP）或者辅助服务器（例如 DNS）收到响应。
 
 ## 数据协商
 
 - header
-  Accept
-  Accept-Encoding
-  Accept-Language
+  Accept:浏览器端可以接受的媒体类型
+  Accept-Encoding:浏览声明接受的压缩方法
+  Accept-Language:浏览器申明接收的语言
   User-Agent:客户端的信息
 - 返回
   Content-type:返回数据类型

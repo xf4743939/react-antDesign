@@ -1,6 +1,6 @@
 # 前端安全性
 
-腾讯大牛亲授漏洞防御(第五章 cookies)
+腾讯大牛亲授漏洞防御(第 6 章 前端点击劫持)
 
 ## xss 处理(Cross Site Scripting) 跨站脚本攻击
 
@@ -101,6 +101,15 @@ Set-Cookie: key=value; SameSite=Strict;
 Set-Cookie: sessionId=e8bb43229de9; Domain=foo.example.com
 ```
 
+- 预防
+
+1. 用户 ID+签名 sign 保证用户 Id 不被篡改
+2. SessionId(随机字符串)
+3. 加密 userId
+4. http only
+5. secure
+6. same-site
+
 ## 提高资源的安全性-SRI(Subresource Integrity) 与 CSP
 
 1. 首先需要服务器开启内容安全策略即:Content-Security-Policy: require-sri-for script;
@@ -123,3 +132,35 @@ crossorigin: "" | anonymous | (use-credentials) 请求头都会带上Origin 属�
   可以通过 webpack webpack-subresource-integrity 插件实现 integrity 实现添加过程。
   开启 SRI，浏览器会对相关资源进行 CORS 检查。至此，当资源内容被劫持篡改时，浏览器校验签名不匹配将使得异常资源不被执行，并触发加载失败。从而进入到资源加载失败的监控流程中，最终可以通过切换 CDN 域名或主域名进行加载重试，直到加载上正确资源，避免资源被劫持篡改内容后注入广告或白屏等情况。
   HTTPS 可以有效应对流量劫持的问题，SRI 在资源完整性再上一道屏障，CSP 也进行了其他方面的补充。“三驾马车” 为页面资源安全 “保驾护航”。
+
+## 点击劫持
+
+- 用户亲手操作
+- 用户不知情
+  危害:可以转账,消费,获取用户敏感信息
+  通过 iframe 放在目标网站,透明度设置为 0;还可以通过 flash
+  怎么防御?  
+  javascript 禁止内嵌(判断 location 是不是相同)
+
+  ```js
+  top.location.href = window.location.href;
+  ```
+
+  http 头 X-Frame-Options
+  deny: 浏览器会拒绝加载当前页面加载任何 iframe 页面
+  SAMEORIGIN:frame 页面地址只能为同源页面地址,
+  ALLOW-FROM origin:运行 frame 加载页面地址
+
+## http 传输窃听
+
+- 如何确定服务器身份
+  可以解决中间人攻击
+  重点:证书无法伪造;证书私钥不被泄露;域名管理权不泄露;CA 坚守原则
+  证书不受信任;浏览器或弹出你的连接不是私密连接(浏览器不确定服务器身份)
+
+1. 浏览器内置证书(ca)信任列表
+2. 服务器去 CA 申请证书
+3. (ca)验证域名颁发证书
+4. 浏览器向服务器发起请求
+5. 服务器向浏览器出具证书
+6. 浏览器验证通过

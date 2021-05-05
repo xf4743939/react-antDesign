@@ -16,6 +16,7 @@ Speed Index(低于 4s)性能好
 
 - javascript 优化
   vb 引擎会把 js-> parse it ->ast 语法树(Abstract syntax Tree)
+
   - . 加载、编译、解析(js 很耗时)、执行
     压缩 js 减少下载时间
     解决方案：
@@ -23,6 +24,20 @@ Speed Index(低于 4s)性能好
     > > Tree shaking 代码减重
     > > 使用 raf 和 rIc 进行时间调度
     > > 建设首屏加载量
+  - defer and async
+    注意 async 与 defer 属性对于 inline-script 都是无效的
+    defer 属性表示延迟执行引入的 javascript,即这段 JavaScript 加载时 HTML 并未停止解析，这两个过程是并行的.整个 document 解析完毕且 defer-script 也加载完成之后（这两件事情的顺序无关），会执行所有由 defer-script 加载的 JavaScript 代码，然后触发 DOMContentLoaded 事件。
+    defer 不会改变 script 中代码的执行顺序
+    和普通 script 有两点区别:载入 javasript 文件时不阻塞 HTML 的解析,执行阶段被放到 HTML 标签解析完成之后
+    - async
+      表示异步执行引入的 javascript;与 defer 区别,如果已经加载好了,就会开始执行-无论此刻 HTML 解析阶段还是 DOMContentLoaded 触发之后。需注意,这种方式加载的 javascript 依然会阻塞 load 事件
+    - DOMContentLoaded
+      DOMContentLoaded 事件的触发时机为:HTML 解析为 DOM 之后
+
+  ```js
+
+  ```
+
 - html 优化
   > > 减少 iframes 使用(会阻塞页面加载);如果想用用延时加载
   > > 压缩空白符(打包解除空白符)
