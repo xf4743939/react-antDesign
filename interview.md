@@ -275,3 +275,27 @@ Ie:Trident
 6. 事件响应模块: 负责事件的管理
 7. 定时器模块:负责定时器的管理
 8. 等等...
+## webview 主要有于什么地方
+是基于webkit的引擎,可以解析Dom元素,展示html页面的控制，和浏览器展示页面的原理是相同的,所以可以把他当做浏览器看待.
+webview 的作用即用于手机系统来展示Html界面,所以主要在手机系统上加载html 文件被需要
+## javaScript 调用Native的方式
+ - 注入API
+ 主要原理:通过webview 提供的接口,向javascript 的context(window)中注入对象或者方法,让javaScript调用时,直接执行相应的Native 代码逻辑,达到javascript 调用Native的目的
+ ```js
+  // 前端调用方式
+  window.postBridgeMessage(message)
+ ```
+ - jsBridge 接口主要功能：调用Native(给Native发消息),和接被Native调用(接收Native消息)
+ ```JS
+ window.JSBridge={
+   invoke:function(bridge,data){
+     nativeBridge.postMessage({
+     bridgeName:bridgeName,
+     data: data||{}
+     })
+   },
+   receiveMessage:function(msg){
+    // 处理msg
+   }
+ }
+ ```
