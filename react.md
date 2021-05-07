@@ -131,8 +131,61 @@ this.setState({
   ```
 
 - 高阶组件 HOC
+  模式简单，但会增加组件层级
 - render Props
+  代码简洁,学习成本较高
 - 函数组件
   - 输入 props,输出 jsx
   - 没有实列,没有生命周期,没有 state
   - 不能扩展其他方法
+
+---
+
+## redux
+
+- 基本概念
+- 单向数据流
+  dispatch(action) -> reducer -> newState -> subscribe 触发通知
+- react-redux
+- 异步 action
+
+```js
+// 异步action
+export const addTodoActionAsync = (text) => {
+  return (dispatch) => {
+    fetch(url).then((res) => {
+      // 执行异步action
+      dispatch(addTo(res.data));
+    });
+  };
+};
+```
+
+- 中间件
+
+## React 原理
+
+- 函数式编程
+  一种编程范式,概念比较多;纯函数;不可变值
+- vdom 和 diff
+- jsx 本质
+  - React.createElement 即是 h 函数返回 vnode
+  - 第一个参数,可能是组件,也可能是 html tag
+  - 组件名,首字母必须大写(react 规定)
+- 合成事件
+  - 所有的事件都挂载到 document 上
+  - event 不是原生的,是 synthneticEvent 合成事件对象
+  - 和 vue 事件不同,和 DOM 事件也不同
+  - 为什么要合成事件机制?
+    1. 更好的兼容性和跨平台
+    2. 挂载到 document,减少内存消耗,避免频繁解绑
+    3. 方便事件的统一管理(事务机制)
+- setState 和 batchUpdate
+  - batchUpdate 机制 分左右分支同步异步更新
+    命中走异步;没命中走同步
+  - transaction 事务机制
+- fiber 将 reconciliation 阶段进行任务拆分;dom 需要渲染时暂停,空闲时恢复
+
+  ```js
+  window.requestIdleCallback();
+  ```
