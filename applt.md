@@ -42,3 +42,6 @@ wx.connectSocket 最大并发限制是五个
 ```js
 wx.setStorage();wx.getStorage();wx.removeStorage();wx.clearStorage()
 ```
+## 分包加载
+1. 整个小程序所有分包大小不超过20M
+2. 单个分包/主包大小不超过2M
