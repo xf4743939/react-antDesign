@@ -31,3 +31,14 @@ onPulldownRefresh->onReachBottom->onShareAppMessage->onPageScroll->onResize->onT
 1. 商品列表数据很大,首次setData的时候耗时高
 2. 渲染出来的商品列表DOM结构多,每次setData都需要创建新的虚拟树和旧树diff操作耗时都比较高
 3. 渲染出来商品列表DOM结构多,占用内存高,造成页面被系统回收的概率较大
+## 使用限制
+返回值使用UTF-8
+```js
+wx.request、wx.uploadFile、wx.downloadFile 最大并发限制为10个
+wx.connectSocket 最大并发限制是五个
+```
+## 存储
+同一个小程序storage 上限为10MB
+```js
+wx.setStorage();wx.getStorage();wx.removeStorage();wx.clearStorage()
+```
