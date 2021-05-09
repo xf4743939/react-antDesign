@@ -1,6 +1,7 @@
 # 面试总结
 
 B 站 2021 前端面试必刷(p18 没看)
+匹配大厂面试要求(第 8 章看完了)
 
 ## MVC、MVP、MVVM，我到底该怎么选？
 
@@ -97,6 +98,19 @@ function myNew() {
   var ret = Con.apply(obj, arguments);
   return ret instanceof Object ? ret : obj;
 }
+```
+
+## 手写 bind
+
+```js
+Array.prototype.bind1 = function () {
+  const args = Array.prototype.slice.call(arguments);
+  const t = args.shift();
+  const self = this;
+  return function () {
+    return self.apply(t, args);
+  };
+};
 ```
 
 ## vue-router 完整的导航解析流程
@@ -275,27 +289,76 @@ Ie:Trident
 6. 事件响应模块: 负责事件的管理
 7. 定时器模块:负责定时器的管理
 8. 等等...
+
 ## webview 主要有于什么地方
-是基于webkit的引擎,可以解析Dom元素,展示html页面的控制，和浏览器展示页面的原理是相同的,所以可以把他当做浏览器看待.
-webview 的作用即用于手机系统来展示Html界面,所以主要在手机系统上加载html 文件被需要
-## javaScript 调用Native的方式
- - 注入API
- 主要原理:通过webview 提供的接口,向javascript 的context(window)中注入对象或者方法,让javaScript调用时,直接执行相应的Native 代码逻辑,达到javascript 调用Native的目的
- ```js
-  // 前端调用方式
-  window.postBridgeMessage(message)
- ```
- - jsBridge 接口主要功能：调用Native(给Native发消息),和接被Native调用(接收Native消息)
- ```JS
- window.JSBridge={
-   invoke:function(bridge,data){
-     nativeBridge.postMessage({
-     bridgeName:bridgeName,
-     data: data||{}
-     })
-   },
-   receiveMessage:function(msg){
-    // 处理msg
-   }
- }
- ```
+
+是基于 webkit 的引擎,可以解析 Dom 元素,展示 html 页面的控制，和浏览器展示页面的原理是相同的,所以可以把他当做浏览器看待.
+webview 的作用即用于手机系统来展示 Html 界面,所以主要在手机系统上加载 html 文件被需要
+
+## javaScript 调用 Native 的方式
+
+- 注入 API
+  主要原理:通过 webview 提供的接口,向 javascript 的 context(window)中注入对象或者方法,让 javaScript 调用时,直接执行相应的 Native 代码逻辑,达到 javascript 调用 Native 的目的
+
+```js
+// 前端调用方式
+window.postBridgeMessage(message);
+```
+
+- jsBridge 接口主要功能：调用 Native(给 Native 发消息),和接被 Native 调用(接收 Native 消息)
+
+```JS
+window.JSBridge={
+  invoke:function(bridge,data){
+    nativeBridge.postMessage({
+    bridgeName:bridgeName,
+    data: data||{}
+    })
+  },
+  receiveMessage:function(msg){
+   // 处理msg
+  }
+}
+```
+
+## for of 知识点
+
+for in/forEach 都是同步执行(不等结果，直接执行完);for of 异步执行(第一个有结果了在执行第二个;所以一个个执行)
+
+## 微任务和宏任务的区别
+
+DOM 渲染和更新是两个过程
+
+1. call Stack 清空
+2. 执行当前的微任务
+3. 尝试 DOM 渲染
+4. 触发 EventLoop
+
+- 宏任务:DOM 渲染后触发,如 setTimeout
+- 微任务: DOM 渲染前触发,如:promise
+- 为什么微任务比宏任务快？
+  宏任务 和 微任务 存放的地方不一样
+  - 微任务是 ES6 语法规定的
+  - 宏任务是有浏览器规定的
+
+## vite 原理剖析
+
+webpack 改变文件,直接编译,耗时
+webpack 有一个模块或者几个模块改变,会根据依赖在重新打包
+vite 改变文件热更新，更快
+构建过程更快;开发环境
+解析 VUE 文件让浏览器可以识别它
+开发阶段：按需加载
+运行阶段:预打包
+
+- vite 特点
+  - 快速启动
+  - 按需编译
+  - 模块热更新
+- vite vs vue-cli
+  - vite 在开发模式下不需要打包可以直接运行,使用的是 ES6 的模块化加载规则
+  - vue-cli 开发环境模式下必须对项目打包才可以运行
+  - vite 基于缓存的热更新
+  - vue-cli 基于 webpack 的热更新
+- 生产环境需要打包吗？  
+  都使用统一模块化规范，就可以不打包了;

@@ -189,3 +189,7 @@ export const addTodoActionAsync = (text) => {
   ```js
   window.requestIdleCallback();
   ```
+
+## react-hooks 知识
+
+hook 放到条件判断语句中,会造成顺序混乱
