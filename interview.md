@@ -362,3 +362,11 @@ vite 改变文件热更新，更快
   - vue-cli 基于 webpack 的热更新
 - 生产环境需要打包吗？  
   都使用统一模块化规范，就可以不打包了;
+
+## common.js 和 es6 中模块引入的区别？
+
+- common.js 模块输出的是一个值的拷贝,es6 模块输出的是值的引用
+- common.js 模块是运行时加载,es6 模块时编译时输出接口
+- common.js 时单个值输出,es8 Module 可以导出多个
+- common.js 时动态语法可以写在判断里，es6 Module 静态语法只能写在顶层
+- common.js 的 this 是当前模块,ES6 Module 的 this 是 undefined

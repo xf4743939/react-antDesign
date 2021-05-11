@@ -1,6 +1,6 @@
 # 前端性能优化(慕课网-前端性能优化企业级解决方案)
 
-## 进度(第 4 章看完了)
+## 进度(第 8 章看到 1 小时 11 分)
 
 ## 性能优化指标与测量工具
 
@@ -215,3 +215,71 @@ transform, opacity;
 ```
 
 复合线程做什么? 将页面拆分图层进行绘制再进行复合
+
+## 资源优化
+
+html 压缩;css 合并压缩;js 文件合并;webp 优势它具有更优化的图像数据压缩算法;
+
+- 图片格式比较
+  png 相比体积比较大;webp(google 推出)
+- 图片优化-图片懒加载优化(lazy loading)
+- 图片优化-使用渐进式图片
+- 使用响应式图片
+  - Srcset 属性的使用
+  - Sizes 属性的使用
+  - picture 的使用
+- 字体优化
+  - 使用 font-display
+
+## webpack 优化
+
+- tree-shaking
+
+```js
+sideEffects: ["*.css"];
+presets:[
+  '@babel/preset-env,'{
+    modules:false
+  }
+]
+```
+
+- js 压缩
+  减少 js 文件体积
+
+```JS
+ uglifyjs-webpack-plugin;
+ 支持es6替换terser-webpack-plugin
+```
+
+- 作用域提升(Scope Hoisting)
+  - 代码体积减小
+  - 执行效率比较高
+  - babel module 设置为 false
+- webpack 的依赖优化(noParse)
+  - 提高构建速度
+  - 直接通知 webpack 忽略较大的库
+- dllPlugin
+  - 避免打包时对不变的库重复构建
+- 代码拆分(split chunks)
+- mini-css-extract-plugin 压缩 css
+- terser 压缩 js
+- minicssextractPlugin 提取 css
+- htmlwebpackplugin 压缩
+
+## 传输优化
+
+## 前沿优化解决方案
+
+- png 到 iconfont
+- 从 IconFont 到 SVG
+  - 保持了图片能力,支持多色彩
+  - 独立的矢量图像
+  - xml 语法,搜索引擎 SEO 和无障碍读屏软件读取
+- 使用 flexBox 布局
+- 优化资源加载的顺序
+  - 浏览器默认安排资源加载优先级
+  - 资源预加载
+  ···html
+  <link rel="preload"/>
+  ···

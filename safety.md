@@ -1,6 +1,6 @@
 # 前端安全性
 
-腾讯大牛亲授漏洞防御(第 6 章 前端点击劫持)
+腾讯大牛亲授漏洞防御(第 7 章 HTTP 传输窃听)
 
 ## xss 处理(Cross Site Scripting) 跨站脚本攻击
 
@@ -58,7 +58,7 @@ XST(跨站追踪)攻击，关闭 Web 服务器的 TRACE 方法
 
 ## CSRF 攻击的防御
 
-Cross Site Request Forgy(跨站请求伪造)
+Cross Site Request forgery(跨站请求伪造)
 
 - CSRF 攻击的危害
 
@@ -164,3 +164,10 @@ crossorigin: "" | anonymous | (use-credentials) 请求头都会带上Origin 属�
 4. 浏览器向服务器发起请求
 5. 服务器向浏览器出具证书
 6. 浏览器验证通过
+
+## 信息泄露的途径
+
+- 错误信息失控
+- SQL 注入
+- 水平权限控制不当
+- xss 和 csrf 攻击
