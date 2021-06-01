@@ -1,4 +1,6 @@
 # rn 开发遇到的坑
+## B站黑马react-native学习进度
+视频P24看完
 ## Gradle路径和下载慢的问题
 1. 首先 把对应版本的gradle下载到本地任意一个磁盘里;比如说我在到了 Z:\gradle\gradle-2.4-all.zip
 2. 然后拖拽 Z:\gradle\文件夹到chrome浏览器 就会得到 file:///Z:/gradle/的访问地址 后面加上文件名 gradle-2.4-all.zip;
