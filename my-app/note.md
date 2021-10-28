@@ -1,6 +1,6 @@
 # react-design
 
-- 进度 react-ant 第三节(6-2) 2021/4/18
+- 2021/10/28 6-1 看完
 - https://usehooks.com/(官方推荐的网站)
 
 ## 为动手完成的知识
